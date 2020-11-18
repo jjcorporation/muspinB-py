@@ -48,7 +48,6 @@ def createPlaids(alpha, **plaid_params):  # use only for coherent
                     np.logical_or(Y>1-h+X, Y<-1+h+X)), alpha[1], 1)
 
     transp_mean = dc ** 2 * alpha[0] * alpha[1] + (1 - dc) ** 2 + dc * (1 - dc) * (alpha[0] + alpha[1])
-    print(transp_mean)
     grating = (grating_r * grating_l - transp_mean) / (1 - alpha[0] * alpha[1])
     
     bkg = visual.Circle(win=win, size=12.7, lineWidth=0, fillColor=bkgcol, autoDraw=False)
@@ -57,10 +56,16 @@ def createPlaids(alpha, **plaid_params):  # use only for coherent
     return bkg, grating
 
 
-plaid = dict( Amb=createPlaids([.5, .5], **plaid_params),
-              transpL=createPlaids([.1, .9], **plaid_params),
-              transpR=createPlaids([.9, .1], **plaid_params),
-              coh=createPlaids([.8, .8], **plaid_params))
-
 circle = visual.Circle(win, size=2.5, lineWidth=0, lineColor=win.color, fillColor=win.color, autoDraw=False)
 fix_point = visual.Circle(win, size=2, units='pix', lineWidth=0, lineColor="red", fillColor="red", autoDraw=False)
+
+
+plaid_stims = dict( 
+    Amb=createPlaids([.95, .95], **plaid_params),
+    transpL=createPlaids([.2, .8], **plaid_params),
+    transpR=createPlaids([.8, .2], **plaid_params),
+    coh=createPlaids([.4, .4], **plaid_params)
+    )
+
+for stim in plaid_stims:
+    plaid_stims[stim] = (*plaid_stims[stim], circle, fix_point)
