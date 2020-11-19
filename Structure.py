@@ -21,11 +21,10 @@ Block_Learn = trials.trialList
 Blocks_Test = []
 NumberOfBlock = 14 # number of blocks
 i = 0
-while i < NumberOfBlock  :
+for i in range (NumberOfBlock)  :
     trials = data.TrialHandler(trialTypes, 1, method='random')
     Block = trials.trialList
     Blocks_Test.append(Block)
-    i += 1
 
 """ Create 1 block of four 'Amp_Kp' trials for Estimation Parameters Phase"""
 Block_Estimation = ['Amb_Kp', 'Amb_Kp', 'Amb_Kp', 'Amb_Kp']
