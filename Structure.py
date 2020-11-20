@@ -29,6 +29,13 @@ for i in range (NumberOfBlock)  :
 """ Create 1 block of four 'Amp_Kp' trials for Estimation Parameters Phase"""
 Block_Estimation = ['Amb_Kp', 'Amb_Kp', 'Amb_Kp', 'Amb_Kp']
 
+""" First Block Learn , then block Estimation, then block test'''
+''' Block learn : at the end of each trial of nAmb_KP, feedback (good/wrong answer)"""
+from utils import*
+create_experiment_structure( nBlocks = 3)
+
+
+
 
 """
 Je reprends ici car boucles dans boucles, et je vais plutot faire avec les matrix
