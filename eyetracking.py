@@ -38,6 +38,5 @@ def setup(filename, win):
                         'default_native_data_file_name': filename,
                         'calibration': {
                             'screen_background_color': bkgcolor}}}  # make backgroundcolor same as during stim representation
-
-
+                            
     return eyetracker_config, guiding_eye

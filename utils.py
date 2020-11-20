@@ -4,9 +4,23 @@ import os
 from pathlib import Path
 import random
 import csv
+from psychopy import core
+from psychopy.data import TrialHandler
 
 
-def loglikelihood_lognormal(waiting_times):
+def wait_keypress( kb, wait):
+    timer = core.CountdownTimer( wait)
+    while timer.getTime() > 0 :
+        keys = kb.getKeys( [ 'quit', 'space'], clear=True)
+        if 'space' in keys:
+            break
+        elif 'quit' in keys:
+            ans = input( 'Do you really want to quit the experiment? [y/n] ')
+            if ans.lower() == 'y':
+                core.quit()
+            
+
+def loglikelihood_lognormal( waiting_times):
     """ compute the most likely parameters for the log-normal law, given waiting times
     Arguments
     waiting_times   : array of waiting times in the process
@@ -95,7 +109,7 @@ def register_subject(datapath='../Data', modalities=None):
             print(registered_participants)
             sid = input('give the subject id if the subject is already in the list of participants, if not press [ENTER]: ')
             if sid in registered_participants:
-                session = max([int(p['session']) for p in participants if p['subject_id']==sid])
+                session = max([int(p['session']) for p in participants if p['subject_id']==sid]) + 1
                 if study == 'P':
                     print('It is not allowed to do more than one pilot session on the same subject, converting to main Study!')
                     study = 'S'  # not allowed to do twice a pilot on the same person
@@ -124,6 +138,32 @@ def register_subject(datapath='../Data', modalities=None):
             os.mkdir(Path(subject_path, m))
         except FileExistsError:
             pass
-
                
     return subject, subject_path
+
+
+def set_experiment_mode():
+    while True:
+        mode = input('Do you want to run the [[F]]ull experiment or only a [T]est? ')
+        if mode.lower() in {'f', ''}:
+            run_mode = "full"
+            break
+        elif mode.lower() == 't':
+            run_mode = "test"
+            break
+        else:
+            print("Run mode {} unknown, please choose either 't' or 'f'.".format(mode))
+    return run_mode
+
+
+def create_experiment_structure( nBlocks = 3):
+    conditions = ['nAmb_nKp', 'nAmb_Kp', 'Amb_nKp', 'Amb_Kp']
+    learning_phase = TrialHandler( [ dict( cond=conditions[k]) for k in range(3)], 1, method='sequential')
+    training_phase = TrialHandler( [ dict( cond=conditions[3])], 4)
+    testing_phase = TrialHandler( [ dict( cond=conditions[k]) for k in range(4)], nBlocks, method='random')
+
+    exp_structure = TrialHandler(
+        [ dict( name="learning_phase", trials=learning_phase),
+          dict( name="training_phase", trials=training_phase),
+          dict( name="testing_phase", trials=testing_phase)], nReps=1, method='sequential')
+    return exp_structure
