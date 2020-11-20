@@ -159,11 +159,13 @@ def set_experiment_mode():
 def create_experiment_structure( nBlocks = 3):
     conditions = ['nAmb_nKp', 'nAmb_Kp', 'Amb_nKp', 'Amb_Kp']
     learning_phase = TrialHandler( [ dict( cond=conditions[k]) for k in range(3)], 1, method='sequential')
-    training_phase = TrialHandler( [ dict( cond=conditions[3])], 4)
+    estimation_phase = TrialHandler( [ dict( cond=conditions[3])], 4)
     testing_phase = TrialHandler( [ dict( cond=conditions[k]) for k in range(4)], nBlocks, method='random')
 
     exp_structure = TrialHandler(
         [ dict( name="learning_phase", trials=learning_phase),
-          dict( name="training_phase", trials=training_phase),
+          dict( name="estimation_phase", trials=estimation_phase),
           dict( name="testing_phase", trials=testing_phase)], nReps=1, method='sequential')
     return exp_structure
+
+
