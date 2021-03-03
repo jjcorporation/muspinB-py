@@ -154,7 +154,8 @@ class MarkovRenewalProcess():
             s = np.random.choice(self.states, p=tm[:, self._ix[s]])
 
         samples.append((s, t_, None))
-        return samples
+        #samples = self.samples#Juliette
+        return samples#self.samples
 
 
 if  __name__ == '__main__':
@@ -168,7 +169,7 @@ if  __name__ == '__main__':
     print('steady state vector = {}\n\n'.format(mrp_model.steady_state))
 
     samples = [mrp_model.sample(1000) for _ in range(10)]
-    # print(samples)
+    print(samples)
 
     mrp = MarkovRenewalProcess(['coherent', 'transparent_left', 'transparent_right'])
     for ix, sample in enumerate(samples):
